@@ -5,3 +5,7 @@ __pycache__/
 *.mp4
 *.pkl
 training/
+*.avi
+predict/
+predict2/
+predict3/
