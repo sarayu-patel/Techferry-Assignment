@@ -1,0 +1,28 @@
+# Core ML / CV
+ultralytics==8.4.33
+supervision==0.27.0.post2
+torch==2.11.0
+torchvision==0.26.0
+opencv-python==4.13.0.92
+numpy==2.4.4
+scikit-learn==1.8.0
+
+# Data
+pandas==3.0.2
+
+# Google Gemini
+google-genai==1.70.0
+google-generativeai==0.8.6
+
+# Text-to-Speech
+gTTS==2.5.4
+edge-tts==7.2.8
+
+# Video processing
+moviepy==2.2.1
+imageio-ffmpeg==0.6.0
+
+# Utilities
+python-dotenv==1.2.2
+requests==2.33.1
+tqdm==4.67.3

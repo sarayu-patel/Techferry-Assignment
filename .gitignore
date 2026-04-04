@@ -4,8 +4,10 @@ __pycache__/
 *.pt
 *.mp4
 *.pkl
-training/
 *.avi
 predict/
 predict2/
 predict3/
+.env
+output_videos/audio_clips/
+.env
