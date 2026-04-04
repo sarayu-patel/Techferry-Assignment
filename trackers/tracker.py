@@ -14,7 +14,7 @@ class Tracker:
         self.model = YOLO(model_path) 
         self.tracker = sv.ByteTrack()
 
-    def add_position_to_tracks(sekf,tracks):
+    def add_position_to_tracks(self,tracks):
         for object, object_tracks in tracks.items():
             for frame_num, track in enumerate(object_tracks):
                 for track_id, track_info in track.items():

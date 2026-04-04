@@ -41,10 +41,11 @@ class SubtitleOverlay:
     ):
         self.display_frames  = max(1, int(display_duration_sec * fps))
         self.font            = cv2.FONT_HERSHEY_DUPLEX
-        self.base_font_scale      = font_scale
+        self.font_scale      = font_scale
         self.font_thickness  = 2
+        self.base_font_scale = font_scale
+        self.base_thickness  = 2
         self.position        = position
-
     # ------------------------------------------------------------------
     # Public API
     # ------------------------------------------------------------------
@@ -92,8 +93,8 @@ class SubtitleOverlay:
     def _draw_subtitle(self, frame: np.ndarray, text: str, event_type: str) -> np.ndarray:
         h, w = frame.shape[:2]
         scale_factor = w / 1920.0
-        font_scale = self.font_scale * scale_factor
-        font_thickness = max(1, int(self.font_thickness * scale_factor))
+        font_scale = self.base_font_scale * scale_factor
+        font_thickness = max(1, int(self.base_thickness * scale_factor))
         max_text_w = w - int(60 * scale_factor)
 
         lines  = self._wrap_text(text, max_text_w, font_scale, font_thickness)

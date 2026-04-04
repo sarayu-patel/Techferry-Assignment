@@ -78,8 +78,19 @@ def main():
         print("[Config] Commentary is disabled (COMMENTARY_MODE=off). Skipping.")
 
     # ── 1. Read video ──────────────────────────────────────────────────────
-    video_path =  'input_videos/chelsea_arsenal_3min.mp4'
+    video_path = 'input_videos/chelsea_arsenal_3min_1080p.mp4'
     video_frames = read_video(video_path)
+    
+    # Limit frames to avoid memory issues
+    MAX_FRAMES = 3000
+    if len(video_frames) > MAX_FRAMES:
+        print(f"[Info] Limiting from {len(video_frames)} to {MAX_FRAMES} frames")
+        video_frames = video_frames[:MAX_FRAMES]
+        
+    h, w = video_frames[0].shape[:2]
+    if w < 1280:
+        print(f"[Info] Upscaling video from {w}x{h} to 1280x720...")
+        video_frames = [cv2.resize(f, (1280, 720)) for f in video_frames]
 
     cap = cv2.VideoCapture(video_path)
     fps = int(cap.get(cv2.CAP_PROP_FPS)) or 24
@@ -94,6 +105,11 @@ def main():
         stub_path=f'stubs/{video_name}_track.pkl'
     )
     tracker.add_position_to_tracks(tracks)
+    
+     # Trim tracks to match limited frames
+    for obj_type in ["players", "ball", "referees"]:
+        if obj_type in tracks:
+            tracks[obj_type] = tracks[obj_type][:len(video_frames)]
 
     # ── 3. Camera movement  [CACHED → stubs/camera_movement_stub.pkl] ─────
     # ── 3. Camera movement  [CACHED → stubs/camera_movement_stub.pkl] ─────
@@ -163,6 +179,15 @@ def main():
             )
 
     team_ball_control = np.array(team_ball_control)
+    # ── Free memory before drawing ────────────────────────────────────────
+    import gc
+    gc.collect()
+    print(f"[Info] Processing {len(video_frames)} frames at {video_frames[0].shape}")
+    # ── Free memory before drawing ────────────────────────────────────────
+    import gc
+    del camera_movement_per_frame
+    gc.collect()
+
 
     # ── 8. Draw base annotations ───────────────────────────────────────────
     output_video_frames = tracker.draw_annotations(
@@ -233,7 +258,7 @@ def main():
         subtitle_overlay = SubtitleOverlay(
             display_duration_sec=_SUB_DURATION,
             fps=fps,
-            font_scale=0.3,
+            font_scale=1.2,
             position=_SUB_POSITION,
         )
         output_video_frames = subtitle_overlay.apply(
