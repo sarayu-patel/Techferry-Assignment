@@ -266,6 +266,57 @@ For faster processing, use Google Colab with T4 GPU:
 3. Set runtime to **GPU (T4)**
 4. Mount Drive and run `python main.py`
 
+
+## Model Performance
+
+### Training Configuration
+
+| Parameter | Value |
+|-----------|-------|
+| Model | YOLOv5x (97.2M parameters) |
+| Image Size | 640×640 |
+| Epochs | 100 |
+| Batch Size | 16 |
+| Optimizer | AdamW (lr=0.00125) |
+| GPU | Tesla T4 (14.9 GB) |
+| Training Time | 2.06 hours |
+| Dataset | 612 train images, 38 validation images |
+| Classes | 4 (ball, goalkeeper, player, referee) |
+
+### Best Model Validation Results
+
+| Class | Precision | Recall | mAP@50 | mAP@50-95 |
+|-------|-----------|--------|--------|-----------|
+| **All (Overall)** | **0.882** | **0.829** | **0.860** | **0.612** |
+| Player | 0.967 | 0.983 | 0.989 | 0.794 |
+| Goalkeeper | 0.891 | 0.909 | 0.977 | 0.750 |
+| Referee | 0.893 | 0.940 | 0.959 | 0.676 |
+| Ball | 0.777 | 0.486 | 0.513 | 0.227 |
+
+### Key Metrics Explained
+
+- **Precision (0.882)** — 88.2% of detections are correct (low false positives)
+- **Recall (0.829)** — 82.9% of actual objects are detected (low false negatives)
+- **mAP@50 (0.860)** — 86.0% mean Average Precision at 50% IoU threshold
+- **mAP@50-95 (0.612)** — 61.2% mAP averaged across IoU thresholds 50%-95%
+
+### Per-Class Observations
+
+- **Player detection** is excellent (98.9% mAP@50) — the model reliably tracks all outfield players
+- **Goalkeeper & Referee** detection is strong (95%+ mAP@50) — distinct jersey colors help identification
+- **Ball detection** is the most challenging (51.3% mAP@50) — the ball is small, fast-moving, and often occluded by players
+
+### Training Loss Progression
+
+| Metric | Epoch 1 | Epoch 50 | Epoch 100 |
+|--------|---------|----------|-----------|
+| Box Loss | 1.348 | 0.902 | 0.647 |
+| Class Loss | 1.666 | 0.396 | 0.299 |
+| DFL Loss | 0.805 | 0.758 | 0.754 |
+
+> **Inference Speed:** 17.2ms per image on Tesla T4 GPU (~58 FPS)
+
+
 ## Event Detection
 
 The system detects three types of real match events from tracking data:
