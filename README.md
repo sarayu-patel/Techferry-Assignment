@@ -146,8 +146,7 @@ The following files/folders are **not pushed to Git** due to their large size. Y
 
 || Folder / File | Reason | How to Obtain |
 |---|---|---|
-| `input_videos/` | Video files are too large for Git | Place your football match video (broadcast angle, MP4) in this folder |
-| `models/best.pt` | Trained YOLO weights (~14MB) | Train using `training/football_training_yolo_v5.ipynb` with the Roboflow dataset |
+| `models/best.pt` | Trained YOLO weights (186MB, exceeds GitHub 100MB limit) | Download from [`models/MODEL_LINKS.md`](models/MODEL_LINKS.md) |
 | `.env` | Contains secret API keys | Copy `.env.example` → `.env` and add your API keys |
 | `.venv/` | Python virtual environment | Created during setup with `python -m venv .venv` |
 
