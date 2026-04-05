@@ -142,13 +142,15 @@ Techferry-Assignment/
 
 ## Files Not Included in Repository
 
-The following files/folders are **not pushed to Git** due to their large size. You need to generate or provide them locally:
+The following files are **not pushed to Git** due to their large size or sensitivity:
 
-|| Folder / File | Reason | How to Obtain |
+| Folder / File | Reason | How to Obtain |
 |---|---|---|
 | `models/best.pt` | Trained YOLO weights (186MB, exceeds GitHub 100MB limit) | Download from [`models/MODEL_LINKS.md`](models/MODEL_LINKS.md) |
 | `.env` | Contains secret API keys | Copy `.env.example` → `.env` and add your API keys |
 | `.venv/` | Python virtual environment | Created during setup with `python -m venv .venv` |
+| Output videos | 165MB+ each, exceeds GitHub limit | Download links in [`output_videos/VIDEO_LINKS.md`](output_videos/VIDEO_LINKS.md) |
+
 
 > **Note:** The `stubs/` folder contains pre-cached tracking data for the demo video (`chelsea_arsenal_3min_1080p`). This only works with that specific video. For any new input video, set `read_from_stub=False` on first run to generate fresh tracking data.
 
