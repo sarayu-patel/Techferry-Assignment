@@ -144,15 +144,16 @@ Techferry-Assignment/
 
 The following files/folders are **not pushed to Git** due to their large size. You need to generate or provide them locally:
 
-| Folder/File | Why Not Included | How to Get |
+|| Folder / File | Reason | How to Obtain |
 |---|---|---|
-| `input_videos/` | Video files are too large for Git | Place your own football match video (broadcast camera angle, MP4 format) in this folder |
-| `stubs/` | Cached tracking data is video-specific and large | Auto-generated on first run with `read_from_stub=False`. Saved as `{video_name}_track.pkl` and `{video_name}_camera.pkl` |
-| `models/best.pt` | Trained YOLO weights (~14MB) | Trained via `training/football_training_yolo_v5.ipynb` using the Roboflow dataset, or download from the linked Roboflow project |
-| `.env` | Contains secret API keys | Copy `.env.example` to `.env` and fill in your API keys |
-| `output_videos/audio_clips/` | Generated TTS audio clips | Auto-generated when `COMMENTARY_MODE=audio` or `both` |
+| `input_videos/` | Video files are too large for Git | Place your football match video (broadcast angle, MP4) in this folder |
+| `models/best.pt` | Trained YOLO weights (~14MB) | Train using `training/football_training_yolo_v5.ipynb` with the Roboflow dataset |
+| `.env` | Contains secret API keys | Copy `.env.example` → `.env` and add your API keys |
+| `.venv/` | Python virtual environment | Created during setup with `python -m venv .venv` |
 
-> **Note:** A sample input video (`08fd33_4.mp4`) from the DFL Bundesliga Data Shootout was used during development. Any broadcast-angle football video will work as input.
+> **Note:** The `stubs/` folder contains pre-cached tracking data for the demo video (`chelsea_arsenal_3min_1080p`). This only works with that specific video. For any new input video, set `read_from_stub=False` on first run to generate fresh tracking data.
+
+> **Note:** Output demo videos are too large for GitHub (100MB+ each). Download links are available in [`output_videos/VIDEO_LINKS.md`](output_videos/VIDEO_LINKS.md).
 
 ## Setup
 
