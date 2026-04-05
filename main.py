@@ -68,6 +68,73 @@ def _build_provider_chain():
             })
 
     return providers
+def _create_tech_stack_frames(width, height, fps, duration_sec=5):
+    """Create tech stack credit frames to append at end of video."""
+    frames = []
+    frame_count = int(fps * duration_sec)
+    
+    for _ in range(frame_count):
+        frame = np.zeros((height, width, 3), dtype=np.uint8)
+        frame[:] = (30, 30, 30)  # dark background
+        
+        scale = width / 1920.0
+        font = cv2.FONT_HERSHEY_DUPLEX
+        
+        # Title
+        title = "Tech Stack Used"
+        title_scale = 1.2 * scale
+        title_size = cv2.getTextSize(title, font, title_scale, 2)[0]
+        tx = (width - title_size[0]) // 2
+        cv2.putText(frame, title, (tx, int(80 * scale)), font, title_scale, (0, 200, 255), 2, cv2.LINE_AA)
+        
+        # Line under title
+        cv2.line(frame, (int(100 * scale), int(110 * scale)), (width - int(100 * scale), int(110 * scale)), (0, 200, 255), 2)
+        
+        # Tech stack items
+        items = [
+            "Object Detection:  YOLOv5x (Ultralytics)",
+            "Object Tracking:   ByteTrack",
+            "Computer Vision:   OpenCV",
+            "Team Clustering:   K-Means (scikit-learn)",
+            "LLM Commentary:    OpenAI GPT-4o-mini",
+            "Text-to-Speech:    Google TTS (gTTS)",
+            "Audio Processing:  ffmpeg",
+            "View Transform:    Perspective Mapping",
+            "Configuration:     python-dotenv",
+            "Training Data:     Roboflow Dataset",
+        ]
+        
+        item_scale = 0.65 * scale
+        y_start = int(160 * scale)
+        line_gap = int(45 * scale)
+        
+        for i, item in enumerate(items):
+            y = y_start + i * line_gap
+            # Split label and value
+            parts = item.split(":")
+            label = parts[0] + ":"
+            value = parts[1] if len(parts) > 1 else ""
+            
+            x = int(200 * scale)
+            cv2.putText(frame, label, (x, y), font, item_scale, (200, 200, 200), max(1, int(1.5 * scale)), cv2.LINE_AA)
+            cv2.putText(frame, value, (x + int(380 * scale), y), font, item_scale, (255, 255, 255), max(1, int(1.5 * scale)), cv2.LINE_AA)
+        
+        # Author
+        author_y = y_start + len(items) * line_gap + int(60 * scale)
+        cv2.line(frame, (int(100 * scale), author_y - int(30 * scale)), (width - int(100 * scale), author_y - int(30 * scale)), (100, 100, 100), 1)
+        author = "Built by: Sarayu Patel"
+        author_size = cv2.getTextSize(author, font, 0.7 * scale, 2)[0]
+        ax = (width - author_size[0]) // 2
+        cv2.putText(frame, author, (ax, author_y), font, 0.7 * scale, (0, 255, 100), max(1, int(2 * scale)), cv2.LINE_AA)
+        
+        github = "github.com/sarayu-patel/Techferry-Assignment"
+        gh_size = cv2.getTextSize(github, font, 0.5 * scale, 1)[0]
+        gx = (width - gh_size[0]) // 2
+        cv2.putText(frame, github, (gx, author_y + int(40 * scale)), font, 0.5 * scale, (150, 150, 150), max(1, int(1 * scale)), cv2.LINE_AA)
+        
+        frames.append(frame)
+    
+    return frames
 
 
 def main():
@@ -267,6 +334,13 @@ def main():
 
     # Save video WITHOUT audio
     no_audio_path = 'output_videos/output_video_final.mp4'
+    
+     # Add tech stack credits at end
+    h, w = output_video_frames[0].shape[:2]
+    tech_frames = _create_tech_stack_frames(w, h, fps, duration_sec=5)
+    output_video_frames = output_video_frames + tech_frames
+    print(f"[Info] Added {len(tech_frames)} tech stack credit frames")
+    
     save_video(output_video_frames, no_audio_path)
     print(f"✅ Video WITHOUT audio → {no_audio_path}")
 
